@@ -76,8 +76,8 @@ jobs:
     - name: Install conventional-changelog-cli
       run: npm install -g conventional-changelog-cli
 
-    - name: Generate CHANGELOG.md
-      run: conventional-changelog -p angular -i CHANGELOG.md -s
+    #- name: Generate CHANGELOG.md
+     # run: conventional-changelog -p angular -i CHANGELOG.md -s
 
     - name: Commit and push CHANGELOG.md
       env:
