@@ -45,7 +45,7 @@ jobs:
       env:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-
+   
     
     - name: SonarQube Quality Gate check
       id: sonarqube-quality-gate-check
@@ -60,15 +60,16 @@ jobs:
     
     - name: "Example show SonarQube Quality Gate Status value"
       run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
-    
+
+  changelog-Generate:  
+    runs-on: ubuntu-latest
+    needs: sonarqube
+    steps:
     
     - name: Generate changelog
       uses: maicol07/github-changelog-action@master
       with:
          tag_query: "1.0.0"
-
-     
-    
 
     -  name: Set up Node.js
        uses: actions/setup-node@v3
@@ -91,26 +92,15 @@ jobs:
            git commit -m "chore: update changelog"
            git push
 
-  changelog:
-    
-  
+  release-notes-generate:  
     runs-on: ubuntu-latest
-    needs: sonarqube
+    needs: changelog-Generate
     steps:
       - name: "✏️ Generate release changelog"
         uses: heinrichreimer/action-github-changelog-generator@v2.3
         with:
           token: ${{ secrets.TOKEN }} 
           
-     
-  bump-version:
-    runs-on: ubuntu-latest
-    needs: changelog
-    steps:
-      - uses: alirezatheh/auto-bump-versions@v1
-        with:
-          github-token: ${{ secrets.TOKEN }}
-          new-version: 1.2.3
-          use-bumpver: true
+ 
 
       
