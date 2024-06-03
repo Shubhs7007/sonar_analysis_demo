@@ -62,24 +62,22 @@ jobs:
       run: echo "The Quality Gate status is ${{ steps.sonarqube-quality-gate-check.outputs.quality-gate-status }}"
 
   changelog:
+    
+  
     runs-on: ubuntu-latest
-    needs: sonarqube
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Generate Changelog
-        uses: mikepenz/release-changelog-builder-action@v2
+      - name: "✏️ Generate release changelog"
+        uses: heinrichreimer/action-github-changelog-generator@v2.3
         with:
-          configuration: .github/release-changelog-builder-config.json
+          token: ${{ secrets.TOKEN }} 
 
-      - name: Commit and Push Changelog
-        run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git add CHANGELOG.md
-          git commit -m 'Update changelog'
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+  bump-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: alirezatheh/auto-bump-versions@v1
+        with:
+          github-token: ${{ secrets.TOKEN }}
+          new-version: 1.2.3
+          use-bumpver: true
+
+      
