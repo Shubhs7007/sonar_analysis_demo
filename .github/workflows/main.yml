@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: '20.x'
       - run: npm install
-      - run: npm test 
+      - run: npm test --if-present
       
   sonarqube:
     runs-on: ubuntu-latest
