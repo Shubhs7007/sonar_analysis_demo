@@ -65,6 +65,7 @@ jobs:
     
   
     runs-on: ubuntu-latest
+    needs: sonarqube
     steps:
       - name: "✏️ Generate release changelog"
         uses: heinrichreimer/action-github-changelog-generator@v2.3
